@@ -1,7 +1,7 @@
 # crestron
 Tools for taking over Crestron 3-Series devices
 
-If you have authenticated access, or the default `crestron` credentials are still enabled, you can use the above Simpl applications to load an unsigned DLL that will be executed when the program is (re)started with PROGRESET.
+If you have authenticated access, or the default `crestron:<blank>` credentials are still enabled, you can use the above Simpl applications to load an unsigned DLL that will be executed when the program is (re)started with PROGRESET.
 
 The DLL folder contains a Visual Studio 2008 project with a simple class. Recompiling the class and replacing the DLL.dll in the LPZ file of your choice (either in the file itself or after deployment) will set you up for success, hopefully.
 
