@@ -23,8 +23,6 @@ PORT     STATE SERVICE
 6510/tcp open  mcer-port
 ```
 
-When authentication is enabled, telnet and FTP are closed. Only 22, 41794, and 41795 are open.
-
 This assumes you are starting from a clean slate. If you would like to factory reset the device to ensure nothing weird happens, SSH into the device and run `RESTORE`.
 ```
 mkdir tmp
