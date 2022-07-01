@@ -47,7 +47,7 @@ ssh crestron@192.168.1.240 progreset
 
 # Other Devices
 
-If you can telnet into the device, the command prompt will contain the RackType that you can update boot.bt with.
+If you can telnet or SSH into the device, the command prompt will contain the RackType that you can update boot.bt with.
 
 ```
 bperry@bperry-Precision-T5610:/tmp/zip$ telnet 192.168.1.174
