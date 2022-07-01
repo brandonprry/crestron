@@ -3,6 +3,24 @@ Tools for taking over Crestron Windows CE devices without the need for Crestron 
 
 If you have authenticated access, or the default `crestron:<blank>` credentials are still enabled, you can use the provided Simpl application to load a malicious application that breaks out of the sandbox to connect back to you.
 
+The ports available to the interface can change depending on the device type, and whether you are looking at the control side or the LAN side. If the device has only the LAN interface connected, it will listen with all ports on that interface. Otherwise, the control ports will be listening on the control interface. The key ports are 21, 22, 23, 843, 41794, or 41795.
+
+```
+Brandons-iMac:~ bperry$ nmap 192.168.1.174
+Starting Nmap 7.92 ( https://nmap.org ) at 2022-07-01 13:46 CDT
+Nmap scan report for DMPS3-7f81812f.attlocal.net (192.168.1.174)
+Host is up (0.0036s latency).
+Not shown: 993 closed tcp ports (conn-refused)
+PORT     STATE SERVICE
+21/tcp   open  ftp
+22/tcp   open  ssh
+23/tcp   open  telnet
+80/tcp   open  http
+443/tcp  open  https
+843/tcp  open  unknown
+6510/tcp open  mcer-port
+```
+
 This assumes you are starting from a clean slate. If you would like to factory reset the device to ensure nothing weird happens, SSH into the device and run `RESTORE`.
 ```
 mkdir tmp
