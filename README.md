@@ -128,7 +128,7 @@ Available commands are `ls`, `pwd`, `exec`, `cat`, `cd`, and `base64`.
 On PRO3, for instance, you can run a graphics test executable for demonstration of the issue.
 
 ```
-exec \Windows\cube.exe
+ > exec \Windows\cube.exe
 ```
 
 A spinning cube will replace the Crestron menu on the display.
