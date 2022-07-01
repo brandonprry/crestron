@@ -27,7 +27,7 @@ ssh crestron@192.168.1.240 progreset
 
 ```
 
-# Other 3-Series Devices
+# Other Devices
 
 If you can telnet into the device, the command prompt with contain the RackType that you can update boot.bt with.
 
