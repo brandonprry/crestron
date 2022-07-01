@@ -5,7 +5,7 @@ If you have authenticated access, or the default `crestron:<blank>` credentials 
 
 In a perfect world, Crestron Simpl applications run in a sandbox and are signed with a special Crestron certificate that is shipped with Crestron Toolbox or the Simpl IDE. However, the application in this repository is a signed Crestron application that breaks out of the Simpl sandbox on supported Crestron Windows CE devices. Windows .NET Compact Framework v3.5 is the expected target.
 
-The ports available to the interface can change depending on the device type, and whether you are looking at the control side or the LAN side. If the device has only the LAN interface connected, it will listen with all ports on that interface. Otherwise, the control ports will be listening on the control interface. The key ports are 21, 22, 23, 843, 41794, or 41795.
+The ports available to the interface can change depending on the device type, and whether you are looking at the control side or the LAN side. If the device has only the LAN interface connected, it will listen with all ports on that interface. Otherwise, the control ports will be listening on the control interface. The key ports are 21, 22, 23, 41794, or 41795.
 
 ```
 Brandons-iMac:~ bperry$ nmap 192.168.1.174
