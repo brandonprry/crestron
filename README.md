@@ -13,7 +13,6 @@ unzip ../pro3.lpz
 ssh crestron@192.168.1.240 del \\User\\*
 scp * crestron@192.168.1.240:\\User
 ssh crestron@192.168.1.240 copy \\User\\boot.bt \\Simpl\\App01\\
-ssh crestron@192.168.1.240 copy \\User\\DLL.dll \\Simpl\\App01\\
 ssh crestron@192.168.1.240 copy \\User\\fdsa_archive.zip \\Simpl\\App01\\
 ssh crestron@192.168.1.240 copy \\User\\fdsa.bin \\Simpl\\App01\\
 ssh crestron@192.168.1.240 copy \\User\\fdsa.cdm \\Simpl\\App01\\
@@ -29,3 +28,41 @@ ssh crestron@192.168.1.240 progregister -P:all
 ssh crestron@192.168.1.240 progreset
 
 ```
+
+# Other 3-Series Devices
+
+If you can telnet into the device, the command prompt with contain the RackType that you can update boot.bt with.
+
+```
+bperry@bperry-Precision-T5610:/tmp/zip$ telnet 192.168.1.174
+Trying 192.168.1.174...
+Connected to 192.168.1.174.
+Escape character is '^]'.
+DMPS3-4K-150-C Console
+Warning: Another console session is open 
+
+DMPS3-4K-150-C>
+
+```
+
+In boot.bt, the RackType is in the first stanza and by default is the PRO3.
+
+```
+[LG_BOOT_DATA]
+BinFileName=fdsa.bin
+SMWFileName=fdsa.smw
+NumberSymbols=15
+NumberSignals=33
+RouteFileName=fdsa.rte
+CUZ=1.007.0017
+RackType=PRO3
+SymParamVersion=21.007.0017
+NumberParameters=3
+NumRealIntegralParams=0
+NumRealStringParams=3
+NVRAMUsed=0
+
+[...snip...]
+```
+
+Replacing PRO3 with the device type will ensure the device does not reject the application.
