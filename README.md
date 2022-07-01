@@ -1,5 +1,5 @@
 # crestron
-Tools for taking over Crestron 3-Series devices
+Tools for taking over Crestron Windows CE devices
 
 If you have authenticated access, or the default `crestron:<blank>` credentials are still enabled, you can use the above Simpl applications to load an unsigned DLL that will be executed when the program is (re)started with PROGRESET.
 
