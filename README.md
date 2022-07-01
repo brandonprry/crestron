@@ -3,8 +3,6 @@ Tools for taking over Crestron Windows CE devices without the need for Crestron 
 
 If you have authenticated access, or the default `crestron:<blank>` credentials are still enabled, you can use the provided Simpl application to load a malicious application that breaks out of the sandbox to connect back to you.
 
-The DLL folder contains a Visual Studio 2008 project with a small class. Recompiling the class and replacing the DLL.dll in the LPZ file of your choice (either in the file itself or after deployment) will set you up for success, hopefully.
-
 This assumes you are starting from a clean slate. If you would like to factory reset the device to ensure nothing weird happens, SSH into the device and run `RESTORE`.
 ```
 mkdir tmp
