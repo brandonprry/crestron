@@ -3,6 +3,8 @@ Tools for taking over Crestron Windows CE devices without the need for Crestron 
 
 If you have authenticated access, or the default `crestron:<blank>` credentials are still enabled, you can use the provided Simpl application to load a malicious application that breaks out of the sandbox to connect back to you.
 
+In a perfect world, Crestron Simpl applications run in a sandbox and are signed with a special Crestron certificate. However, the application in this repository is a signed Crestron application that breaks out of the Simpl sandbox.
+
 The ports available to the interface can change depending on the device type, and whether you are looking at the control side or the LAN side. If the device has only the LAN interface connected, it will listen with all ports on that interface. Otherwise, the control ports will be listening on the control interface. The key ports are 21, 22, 23, 843, 41794, or 41795.
 
 ```
