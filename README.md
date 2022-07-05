@@ -49,7 +49,7 @@ ssh crestron@192.168.1.240 progreset
 
 # Other Devices
 
-If you can telnet or SSH into the device, the command prompt will contain the RackType that you can update boot.bt with.
+If you can telnet or SSH into the device, the command prompt will contain the `RackType` that you can update `boot.bt` with.
 
 ```
 $ telnet 192.168.1.174
@@ -63,7 +63,7 @@ DMPS3-4K-150-C>
 
 ```
 
-In boot.bt, the RackType is in the first stanza and by default is the PRO3.
+In `boot.bt`, the `RackType` is in the first stanza and by default is the `PRO3`.
 
 ```
 [LG_BOOT_DATA]
@@ -73,7 +73,7 @@ NumberSymbols=15
 NumberSignals=33
 RouteFileName=fdsa.rte
 CUZ=1.007.0017
-RackType=PRO3
+RackType=PRO3                 <---------- here
 SymParamVersion=21.007.0017
 NumberParameters=3
 NumRealIntegralParams=0
@@ -83,11 +83,11 @@ NVRAMUsed=0
 [...snip...]
 ```
 
-Replacing PRO3 with the device type will ensure the device does not reject the application.
+Replacing `PRO3` with the device type will ensure the device does not reject the application.
 
 # Using the shell
 
-The shell expects a \User\ip file with the IP address to connect back to. Port 4445 is hardcoded.
+The shell expects a `\User\ip` file with the IP address to connect back to. Port 4445 is hardcoded.
 
 ```
 $ echo -n 192.168.1.123 > ip
